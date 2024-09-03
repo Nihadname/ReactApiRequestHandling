@@ -5,6 +5,8 @@ import Home from './Pages/Home/Index';
 import './App.css';
 import React from "react";
 import Products from "./Pages/Products/Index";
+import Register from "./Pages/Register/Index";
+import Login from "./Pages/Login/Index";
 
 function App() {
   
@@ -20,6 +22,10 @@ function App() {
                     <Route path='/Products' index element={<Products />} />
 
                 </Route>
+                <Route path='/Register' index element={<Register />} />
+                <Route path='/login' index element={<Login />} />
+
+
             </Routes>
        </React.Fragment>
            
