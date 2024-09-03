@@ -27,7 +27,13 @@ function Products() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5104/api/Category/getAll');
+        const token = localStorage.getItem('jwtToken');
+
+      const response = await axios.get('http://localhost:5104/api/Category/getAll',{
+        headers:{
+          Authorization: `Bearer ${token}`,
+        }
+      });
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -36,8 +42,14 @@ function Products() {
 
   const fetchProducts = async () => {
     try {
+      const token = localStorage.getItem('jwtToken');
+
       const response = await axios.get(
-        `http://localhost:5104/api/Product?page=${currentPage}&CategoryId=${selectedCategory}&search=${search}&Take=${Take}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+        `http://localhost:5104/api/Product?page=${currentPage}&CategoryId=${selectedCategory}&search=${search}&Take=${Take}&minPrice=${minPrice}&maxPrice=${maxPrice}`,{
+          headers:{
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       console.log('API Response:', response.data);
       setProducts(response.data.items);

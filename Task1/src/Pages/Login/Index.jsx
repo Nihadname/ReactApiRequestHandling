@@ -17,7 +17,7 @@ const FetchLogInUser= async () =>{
     const response = await axios.post('http://localhost:5104/api/Auth/LogIn', FormData);
     const token = response.data.token;
     localStorage.setItem('jwtToken', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    //axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     console.log('User registered successfully:', token);
   }catch (error) {
       console.error('Error registering user:', error);
