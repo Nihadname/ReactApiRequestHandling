@@ -14,7 +14,11 @@ function Products() {
   const [Take, setTake] = useState(4); 
   const[minPrice,SetMinPrice]=useState('');
   const[maxPrice,SetMaxPrice]=useState('');
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [filters, setFilters] = useState([]);
+  function toggle() {
+    setIsOpen(true);
+  }
   const itemsPerPage = Take;
 
   useEffect(() => {
@@ -66,23 +70,59 @@ function Products() {
   };
 
   const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value ? parseInt(e.target.value) : '');
+    const value=e.target.value ? parseInt(e.target.value) : ''
+    setSelectedCategory(value);
     setCurrentPage(1); 
+    updateFilters('Category', value ? categories.find(c => c.id === value)?.name : 'All Categories');
+
   };
 const handleTakeChange=(value)=>{
   setTake(value);
   setCurrentPage(1); 
+  updateFilters('Items per page', value);
 
 }
+const handleMinPriceChange = (value) => {
+  SetMinPrice(value);
+  updateFilters('Min Price', value);
+};
+const handleMaxPriceChange = (value) => {
+  SetMaxPrice(value);
+  updateFilters('Max Price', value);
+};
+const updateFilters = (key, value) => {
+  setFilters((prevFilters) => {
+    const updatedFilters = prevFilters.filter((filter) => filter.key !== key);
+    if (value) updatedFilters.push({ key, value });
+    return updatedFilters;
+  });
+};
+
+const removeFilter = (key) => {
+  setFilters((prevFilters) => prevFilters.filter((filter) => filter.key !== key));
+  if (key === 'Category') setSelectedCategory('');
+  if (key === 'Min Price') SetMinPrice('');
+  if (key === 'Max Price') SetMaxPrice('');
+  if (key === 'Items per page') setTake(4); 
+};
   const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   return (
     <div>
-      <input type="number"         onChange={e=>SetMinPrice(e.target.value)}/>
-      <input type="number"  onChange={e=>SetMaxPrice(e.target.value)}/>
+      <input type="number"         onChange={e=>handleMinPriceChange(e.target.value)}/>
+      <input type="number"  onChange={e=>handleMaxPriceChange(e.target.value)}/>
 
 <p></p>
+   {/* Display applied filters */}
+   <div  value={isOpen} className="applied-filters">
+        {filters.map((filter) => (
+          <span key={filter.key} onClick={() => removeFilter(filter.key)} className="filter-tag">
+            {filter.key}: {filter.value} ✕
+          </span>
+        ))}
+      </div>
       {/* Search input */}
+      
       <div className="items-per-page">
         <button onClick={() => handleTakeChange(3)}>3</button>
         <button onClick={() => handleTakeChange(5)}>5</button>
@@ -96,8 +136,9 @@ const handleTakeChange=(value)=>{
 
       {/* Category filter dropdown */}
       <div className="filter-container">
-        <select onChange={handleCategoryChange}>
+        <select onChange={handleCategoryChange} onClick={toggle}>
           <option value="">All Categories</option>
+          
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}

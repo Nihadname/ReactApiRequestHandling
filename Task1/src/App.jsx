@@ -7,6 +7,7 @@ import React from "react";
 import Products from "./Pages/Products/Index";
 import Register from "./Pages/Register/Index";
 import Login from "./Pages/Login/Index";
+import ProductDetail from "./Pages/ProductDetail/Index";
 
 function App() {
   
@@ -20,6 +21,7 @@ function App() {
                 <Route element={<MainLayout />}>
                     <Route path='/' index element={<Home />} />
                     <Route path='/Products' index element={<Products />} />
+                    <Route path="Products/detail/:id" element={<ProductDetail/>}></Route>
 
                 </Route>
                 <Route path='/Register' index element={<Register />} />

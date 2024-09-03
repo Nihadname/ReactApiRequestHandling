@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
+
 import './index.css'; 
 
 const ProductCard = ({ product }) => {
@@ -7,7 +9,7 @@ const ProductCard = ({ product }) => {
     <div className="product-card">
       <img src={product.productImageName} alt={product.name} className="product-image" />
       <div className="product-details">
-        <h2 className="product-name">{product.name}</h2>
+      <Link to={`./detail/${product.id}`}><h2 className="product-name">{product.name}</h2></Link>
         <p className="product-category">{product.category.name}</p>
         <p className="product-price">${product.salePrice.toFixed(2)}</p>
         <p className="product-profit">Profit: ${product.profitMadeFromOne.toFixed(2)}</p>
@@ -21,6 +23,7 @@ const ProductCard = ({ product }) => {
 
 ProductCard.propTypes = {
   product: PropTypes.shape({
+    id:PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     productImageName: PropTypes.string.isRequired,
     salePrice: PropTypes.number.isRequired,
